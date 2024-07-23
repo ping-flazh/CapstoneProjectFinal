@@ -45,7 +45,7 @@ After doing data clean-up and combining all three datasets, the final dataset lo
 ![Combined-Dataset](./images/Combined-Dataset.png)
 
 The Scatter plot that shows the user sentiment of tweet positive vs. negative
-![Positive_NegativeSentiment](./images/Positive_NegativeSentiment.png)
+![PositiveNegative_Sentiment](./images/PositiveNegative_Sentiment.png)
 
 The Tesla stock price and the distribution of up & down of the stock for the period of 10/1/2021 - 5/31/2022.
 ![TSLA_Price](./images/TSLA_Price.png)
