@@ -29,8 +29,8 @@ The available data range that is available from these three datasets: 10/1/2021 
 Besides that, there are some filtering and data clean-up that are done:
 - Stock data:
   - Filter by CompanyName='TSLA'
-  - Remove all columns except 'Adj Close' and rename as 'value'
-  - Add a new column 'is_positive' and populate with value of 1 (means stock value go up from previous day) or 0 (means stock value go down from previous day)
+  - Remove column 'close' and rename column 'Adj Close' to 'value' and make the rest of columns lower case.
+  - Add a new column 'target' and populate with value of 1 (means stock value go up from previous day) or 0 (means stock value go down from previous day)
 - Macro economics: 
   - Drop un-needed columns, rename some of columns and make it lower case
   - Since the data is monthly and need to be joined with other dataset, then the data needs to duplicate into daily data for the same month
@@ -41,30 +41,71 @@ Besides that, there are some filtering and data clean-up that are done:
      To generate user sentiments, I tried SentimentIntensityAnalyzer from NTLK library and also Roberta Pretrained Model. I ended up using the Roberta since the result of sentiments looks more accurrate, here is the example:
       ![Roberta](./images/Roberta.png)
 
+## Examining Data
+
 After doing data clean-up and combining all three datasets, the final dataset look like the following:
+
 ![Combined-Dataset](./images/Combined-Dataset.png)
 
-The Scatter plot that shows the user sentiment of tweet positive vs. negative
-![PositiveNegative_Sentiment](./images/PositiveNegative_Sentiment.png)
+Here is how the Tesla stock price look like with the distribution of up & down of the stock for the period of 10/1/2021 - 5/31/2022.
 
-The Tesla stock price and the distribution of up & down of the stock for the period of 10/1/2021 - 5/31/2022.
 ![TSLA_Price](./images/TSLA_Price.png)
+
+### Data Distribution
+
+We have a pretty close number of distribution of 'target' data (up & down of the stock value)
+
 ![Up_Down](./images/Up_Down.png)
 
-The following shows the positive and negative sentiments differentiated by the stock up & down value.
+The next four charts show distribution of tweet positive, neutral, negative, and also polarity score.
+
+![Tweet_Pos_Dist](./images/Tweet_Pos_Dist.png)
+![Tweet_Neg_Dist](./images/Tweet_Neg_Dist.png)
+![Tweet_Neu_Dist](./images/Tweet_Neu_Dist.png)
+![Tweet_Pol_Dist](./images/Tweet_Pol_Dist.png)
+
+### User Sentiment Data
+
+The following scatter plot shows the user sentiment of positive & negative tweets with respect to target (1=Up=Yellow, 0=Down=Purple)
+
+![PositiveNegative_Sentiment](./images/PositiveNegative_Sentiment.png)
+
+The next two plots shows the positive and negative sentiments differentiated by the stock up & down value. 
+
+Notice in the positive sentiment, the green (up or positive) line is mostly higher or above the red (down or negative) line, which means when sentiment is positive, stock value is up
+
 ![Positive_Sentiment](./images/Positive_Sentiment.png)
+
+Likewise, in the negative sentiment, the red (down or negative) line is mostly higher or above the green (up or positive) line, which means when sentiment is negative, stock value is down
+
 ![Negative_Sentiment](./images/Negative_Sentiment.png)
+
+Let's look at the tweet score result; In this chart, we can see the score value of respective positive, negative, and neutral. Notice that the 'positive' is not that high and almost about the same score as 'neutral', this tells us that we may not have balance data and it will be great if we have stronger positive sentiment
+
+![TweetScoreResult](./images/TweetScoreResult.png)
+
+Next is the tweet polarity score which should have values ranging from -1 to 1. Notice that not many data that has score below 0 because as describe in previous chart, the neutral sentiments are pretty high and it's better to have data where sentiments are more toward positive or negative and less on neutral.
+
+![TweetPolarityScore](./images/TweetPolarityScore.png)
+
 
 ## Analysis and Findings
 
-In this analysis, I ran several classification algorithm such as Decision Tree, KNN, SVC, and Random Forest. Here is the result after running all algorithms:
+In this analysis, I ran several classification algorithm such as Logistic Regression, Decision Tree, K-Nearest Neighbor, SVC, Random Forest, and Linear Discriminant Analysis. Here is the result after running all algorithms:
 
 ![Model_Result](./images/Model_Result.png)
 
-The accuracy scores are pretty low (below 60) for all the algorithms, this may be due to several reasons:
-- The positive and negative of tweet data distribution does not look good to me, I need to look into this more to understand what the issue here.
-- When I look at the positive & negative sentiments that are differentiated by the up & down value (see chart above), I don't see the data looks good either, it may be due to the way I average the sentiment results for several tweets for the same day is not correct, I may need to look into this and use a different approach, so that I can intepret the data better in a chart.
-- In order to combine all datasets that include the Macro Economic data, I need to duplicate the Macro Economic data for the same month into daily data, this duplicate data may also affect the accuracy result.
-- I may need to fine tune and play around more with GridSearchCV parameters to see if I can improve the score.
+The accuracy scores are better than my initial report which was mostly below 60 but in this new report, the result mostly above 60 except for Decision Tree. The highest is the SVC algorithm followed by Linear Discriminant Analysis. 
 
-For this initial findings, I think I need to do further analysis in order to figure out if the up & down of stock price is affected by user sentiment and macro economics.
+I think I still can improve the current results and here are some conclusions based on my findings:
+ 
+- As mentioned, the results in the current report are better than my previous results, one of the main reasons is I made a mistake in calculating the average of the sentiment results for several tweets for the same day. I fixed it in my latest notebook.
+- In order to combine all datasets that include the Macro Economic data, I need to duplicate the Macro Economic data for the same month into daily data, this duplicate data may affect the accuracy result.
+- I don't have enough data, I think I may need to collect more data perhaps using twitter API so I can more variety of sentiments data where it has higher positive and negative sentiments with lower neutral sentiment.
+- There are still some rooms to fine tune the GridSearchCV parameters to get higher score specifically SVC that currently has the highest score.
+- I can experiment with a different stock ticker to see if other tickers may be more sensitive and affected by user sentiments and macro economics data.
+- In summary, the up & down of stock price in this analysis somewhat is affected by user sentiments as shown in several of my charts regarding user sentiments and there are several thing that we can do to improve as described in several previous bullet points.
+
+## What's Next
+
+I think with the combination usage of neural network algorithm, we may be able to predict future stock values instead of just predicting if it goes up or down.
