@@ -97,7 +97,7 @@ In this analysis, I ran several classification algorithm such as Logistic Regres
 
 The accuracy scores are better than my initial report which was mostly below 60 but in this new report, the result mostly above 60 except for Decision Tree. The highest is the SVC algorithm followed by Linear Discriminant Analysis. 
 
-I think I still can improve the current results and here are some conclusions based on my findings:
+I think there are still rooms to improve the current results and here are some conclusions based on my findings:
  
 - As mentioned, the results in the current report are better than my previous results, one of the main reasons is I made a mistake in calculating the average of the sentiment results for several tweets for the same day. I fixed it in my latest notebook.
 - In order to combine all datasets that include the Macro Economic data, I need to duplicate the Macro Economic data for the same month into daily data, this duplicate data may affect the accuracy result.
