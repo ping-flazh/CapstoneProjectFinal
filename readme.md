@@ -104,7 +104,7 @@ I think there are still rooms to improve the current results and here are some c
 - I don't have enough data, I think I may need to collect more data perhaps using twitter API so I can more variety of sentiments data where it has higher positive and negative sentiments with lower neutral sentiment.
 - There are still some rooms to fine tune the GridSearchCV parameters to get higher score specifically SVC that currently has the highest score.
 - I can experiment with a different stock ticker to see if other tickers may be more sensitive and affected by user sentiments and macro economics data.
-- In summary, the up & down of stock price in this analysis somewhat is affected by user sentiments as shown in several of my charts regarding user sentiments and there are several thing that we can do to improve as described in several previous bullet points.
+- In summary, the up & down of stock price in this analysis somewhat is affected by user sentiments as shown in several of my charts regarding user sentiments and there are several things that we can do to improve as described in several previous bullet points.
 
 ## What's Next
 
